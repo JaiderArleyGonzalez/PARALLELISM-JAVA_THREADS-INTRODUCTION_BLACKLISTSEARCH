@@ -6,6 +6,8 @@
 package edu.eci.arsw.blacklistvalidator;
 
 import edu.eci.arsw.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,7 +20,8 @@ import java.util.logging.Logger;
 public class HostBlackListsValidator {
 
     private static final int BLACK_LIST_ALARM_COUNT=5;
-    
+    private int ocurrencesCount = 0;
+    private int checkedListsCount = 0;
     /**
      * Check the given host's IP address in all the available black lists,
      * and report it as NOT Trustworthy when such IP was reported in at least
@@ -27,29 +30,48 @@ public class HostBlackListsValidator {
      * BLACK_LIST_ALARM_COUNT, the search is finished, the host reported as
      * NOT Trustworthy, and the list of the five blacklists returned.
      * @param ipaddress suspicious host's IP address.
+     * @param N cantidad de hilos.
      * @return  Blacklists numbers where the given host's IP address was found.
      */
-    public List<Integer> checkHost(String ipaddress){
+    public List<Integer> checkHost(String ipaddress, int N){
         
-        LinkedList<Integer> blackListOcurrences=new LinkedList<>();
+        LinkedList<Integer> blackListOcurrences = new LinkedList<>();
         
-        int ocurrencesCount=0;
+       
         
         HostBlacklistsDataSourceFacade skds=HostBlacklistsDataSourceFacade.getInstance();
         
-        int checkedListsCount=0;
         
-        for (int i=0;i<skds.getRegisteredServersCount() && ocurrencesCount<BLACK_LIST_ALARM_COUNT;i++){
-            checkedListsCount++;
+        List<MaliciousHostHunter> threads = new ArrayList<>();
+
+        int chunkSize = skds.getRegisteredServersCount() / N; 
+        for(int i = 0; i < N; i++){
+            int startIndex = i * chunkSize;
+            int endIndex = (i == N - 1) ? skds.getRegisteredServersCount() : (i + 1) * chunkSize;
+            MaliciousHostHunter thread = new MaliciousHostHunter(skds, ipaddress, startIndex, endIndex, N);
+            threads.add(thread);
+        }
+        for (MaliciousHostHunter thread : threads) {
+            thread.start();
+        }
+        for (MaliciousHostHunter thread : threads) {
+            try {
+                thread.join();
+                blackListOcurrences.addAll(thread.getBlackListOcurrences());
             
-            if (skds.isInBlackListServer(i, ipaddress)){
-                
-                blackListOcurrences.add(i);
-                
-                ocurrencesCount++;
+                for (Integer element : thread.getBlackListOcurrences()) {
+                    if (!blackListOcurrences.contains(element)) {
+                        blackListOcurrences.add(element);
+                    }
+                }
+                checkedListsCount += thread.howManyCheckedListsCount();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         
+
+
         if (ocurrencesCount>=BLACK_LIST_ALARM_COUNT){
             skds.reportAsNotTrustworthy(ipaddress);
         }
@@ -61,8 +83,13 @@ public class HostBlackListsValidator {
         
         return blackListOcurrences;
     }
-    
-    
+    /*
+     * @return El número de ocurrencias de servidores maliciosos
+     */
+    public int getOcurrencesCount(){
+        return ocurrencesCount;
+    }
+
     private static final Logger LOG = Logger.getLogger(HostBlackListsValidator.class.getName());
     
     

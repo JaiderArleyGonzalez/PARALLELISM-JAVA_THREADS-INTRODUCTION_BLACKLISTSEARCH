@@ -24,7 +24,7 @@
 	-Start \
 	
 	![](img/start.png)
-	-Run\
+	\ Run\
 	![](img/start.png)
 
 **Parte II - Ejercicio Black List Search**
