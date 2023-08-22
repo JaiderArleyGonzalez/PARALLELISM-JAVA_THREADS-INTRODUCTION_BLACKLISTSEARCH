@@ -1,7 +1,5 @@
 package edu.eci.arsw.blacklistvalidator;
-
 import java.util.LinkedList;
-
 import edu.eci.arsw.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
 
 /*
@@ -10,7 +8,7 @@ import edu.eci.arsw.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
  */
 public class MaliciousHostHunter extends Thread{
     private String ipAddress;
-    private int startIndex, endIndex, BLACK_LIST_ALARM_COUNT, ocurrencesCount, checkedListsCount;
+    private int startIndex, endIndex, ocurrencesCount, checkedListsCount;
     private HostBlacklistsDataSourceFacade skds;
     private LinkedList<Integer> blackListOcurrences;
     /*
@@ -18,14 +16,11 @@ public class MaliciousHostHunter extends Thread{
      * @param ipAddress El segmento del conjunto de servidores disponibles.
      * @param N Cantidad de hilos
      */
-    public MaliciousHostHunter(HostBlacklistsDataSourceFacade skds, String ipAddress, int startIndex, int endIndex, int BLACK_LIST_ALARM_COUNT){
+    public MaliciousHostHunter(HostBlacklistsDataSourceFacade skds, String ipAddress, int startIndex, int endIndex){
         this.skds = skds;
         this.ipAddress=ipAddress;
         this.startIndex=startIndex;
-        this.endIndex=endIndex;
-        this.BLACK_LIST_ALARM_COUNT=BLACK_LIST_ALARM_COUNT;
-        
-        
+        this.endIndex=endIndex;   
         ocurrencesCount = 0;
         checkedListsCount = 0;
         blackListOcurrences = new LinkedList<>();
@@ -46,16 +41,10 @@ public class MaliciousHostHunter extends Thread{
                 
                 localOccurrencesCount++;
                 
-            }
-            
-            
-            
+            } 
         }
-
         checkedListsCount = localCheckedListsCount;
         ocurrencesCount = localOccurrencesCount;
-        
-        
     }
     
     /*

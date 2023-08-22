@@ -34,22 +34,14 @@ public class HostBlackListsValidator {
      * @return  Blacklists numbers where the given host's IP address was found.
      */
     public List<Integer> checkHost(String ipaddress, int N){
-        
         LinkedList<Integer> blackListOcurrences = new LinkedList<>();
-        
-       
-        
         HostBlacklistsDataSourceFacade skds=HostBlacklistsDataSourceFacade.getInstance();
-        
-        
         List<MaliciousHostHunter> threads = new ArrayList<>();
-
         int chunkSize = skds.getRegisteredServersCount() / N; 
         for(int i = 0; i < N; i++){
             int startIndex = i * chunkSize;
             int endIndex = (i == N - 1) ? skds.getRegisteredServersCount() : (i + 1) * chunkSize;
-            
-            MaliciousHostHunter thread = new MaliciousHostHunter(skds, ipaddress, startIndex, endIndex, N);
+            MaliciousHostHunter thread = new MaliciousHostHunter(skds, ipaddress, startIndex, endIndex);
             threads.add(thread);
         }
         for (MaliciousHostHunter thread : threads) {
@@ -71,9 +63,6 @@ public class HostBlackListsValidator {
                 e.printStackTrace();
             }
         }
-        
-
-
         if (ocurrencesCount>=BLACK_LIST_ALARM_COUNT){
             skds.reportAsNotTrustworthy(ipaddress);
         }
