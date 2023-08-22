@@ -21,11 +21,19 @@
 	2. Inicie los tres hilos con 'start()'.
 	3. Ejecute y revise la salida por pantalla. 
 	4. Cambie el incio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.
-	-Start \
 	
-	![](img/start.png)
-	\ Run\
-	![](img/start.png)
+	&emsp;&emsp;&emsp;Start 
+
+	&emsp;&emsp;&emsp;![](img/start.png)
+
+
+	&emsp;&emsp;&emsp;Run
+
+
+	&emsp;&emsp;&emsp;![](img/run.png)
+	<p>Cuando se invoca directamente el método "run()" el código se ejecutará en el hilo actual de manera sincrónica, no se creará un nuevo hilo para la ejecución. Usarlo directamente no habilitará la concurrencia y no aprovechará la capacidad de ejecución paralela de threads.<br> Al usar "start()", en cambio, crea un nuevo thread y ejecuta "run()" en ese nuevo thread, permitiendo la concurrencia y la ejecución paralela.
+	</p>
+
 
 **Parte II - Ejercicio Black List Search**
 
@@ -65,6 +73,14 @@ Para 'refactorizar' este código, y hacer que explote la capacidad multi-núcleo
 **Parte II.I Para discutir la próxima clase (NO para implementar aún)**
 
 La estrategia de paralelismo antes implementada es ineficiente en ciertos casos, pues la búsqueda se sigue realizando aún cuando los N hilos (en su conjunto) ya hayan encontrado el número mínimo de ocurrencias requeridas para reportar al servidor como malicioso. Cómo se podría modificar la implementación para minimizar el número de consultas en estos casos?, qué elemento nuevo traería esto al problema?
+
+Se podría buscar la manera de detener los hilos cuando uno ya consiguió el objetivo. Para esto se podría recurrir a funciones o métodos como:
+
+* Thread.stop(): Detiene bruscamente el hilo, pero esto mismo puede dejar recursos en un estado incierto y potencialmente causar problemas en la aplicación.
+
+* Thread.interrupt(): Este método establece una bandera de interrupción en el hilo. El hilo debe ser programado para revisar periódicamente si se ha establecido la bandera de interrupción y, si es así, detenerse de manera adecuada. Esto implica una cooperación voluntaria del hilo para detenerse.
+
+* Usar una bandera para la terminación: Puedes usar una variable booleana (una "bandera") que los hilos revisen periódicamente. Cuando quieras detener los hilos, cambias el valor de la bandera y los hilos pueden finalizar de manera controlada.
 
 **Parte III - Evaluación de Desempeño**
 

@@ -83,12 +83,7 @@ public class HostBlackListsValidator {
         
         return blackListOcurrences;
     }
-    /*
-     * @return El número de ocurrencias de servidores maliciosos
-     */
-    public int getOcurrencesCount(){
-        return ocurrencesCount;
-    }
+    
 
     private static final Logger LOG = Logger.getLogger(HostBlackListsValidator.class.getName());
     

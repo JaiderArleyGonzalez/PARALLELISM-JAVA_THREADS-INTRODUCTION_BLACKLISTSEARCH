@@ -30,7 +30,9 @@ public class MaliciousHostHunter extends Thread{
         checkedListsCount = 0;
         blackListOcurrences = new LinkedList<>();
     }
-
+    /*
+     * Ejecución del Thread
+     */
     public void run(){
         int localOccurrencesCount = 0;
         int localCheckedListsCount = 0;
@@ -43,7 +45,7 @@ public class MaliciousHostHunter extends Thread{
                 blackListOcurrences.add(i);
                 
                 localOccurrencesCount++;
-                System.out.println(blackListOcurrences);
+                
             }
             if(blackListOcurrences.size()>=BLACK_LIST_ALARM_COUNT){
                 
@@ -67,9 +69,19 @@ public class MaliciousHostHunter extends Thread{
     public int howManyOccurrences(){
         return ocurrencesCount;
     }
+    /*
+     *Método que permite preguntar a las instancias del mismo (los hilos) cuántas listas 
+     *de servidores maliciosos ha revisado.
+     *@return cantidad de listas revisadas
+     */
     public int howManyCheckedListsCount(){
         return checkedListsCount;
     }
+    /*
+     *Método que permite preguntar a las instancias del mismo (los hilos) las posiciones dentro de la lista 
+     *donde encontró la dirección la ip
+     *@return posiciones dentro de una lista (int)
+     */
     public LinkedList<Integer> getBlackListOcurrences(){
         return blackListOcurrences;
     }
