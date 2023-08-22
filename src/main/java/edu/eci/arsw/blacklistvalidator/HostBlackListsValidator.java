@@ -66,6 +66,7 @@ public class HostBlackListsValidator {
                     }
                 }
                 checkedListsCount += thread.howManyCheckedListsCount();
+                ocurrencesCount += thread.howManyOccurrences();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -89,15 +89,31 @@ Se podría buscar la manera de detener los hilos cuando uno ya consiguió el obj
 
 **Parte III - Evaluación de Desempeño**
 
-A partir de lo anterior, implemente la siguiente secuencia de experimentos para realizar las validación de direcciones IP dispersas (por ejemplo 202.24.34.55), tomando los tiempos de ejecución de los mismos (asegúrese de hacerlos en la misma máquina):
+A partir de lo anterior, implemente la siguiente secuencia de experimentos para realizar las validación de direcciones IP dispersas (por ejemplo 202.24.34.55), tomando los tiempos de ejecución de los mismos (asegúrese de hacerlos en la misma máquina) Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las pruebas, revise y anote el consumo de CPU y de memoria en cada caso. ![](img/jvisualvm.png)
 
 1. Un solo hilo.
-2. Tantos hilos como núcleos de procesamiento (haga que el programa determine esto haciendo uso del [API Runtime](https://docs.oracle.com/javase/7/docs/api/java/lang/Runtime.html)).
-3. Tantos hilos como el doble de núcleos de procesamiento.
-4. 50 hilos.
-5. 100 hilos.
 
-Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las pruebas, revise y anote el consumo de CPU y de memoria en cada caso. ![](img/jvisualvm.png)
+	<b>CPU:</b> ![](img/1Hilo.png)
+	<b>Tiempo:</b> ![](img/1HiloT.png)
+	
+2. Tantos hilos como núcleos de procesamiento (haga que el programa determine esto haciendo uso del [API Runtime](https://docs.oracle.com/javase/7/docs/api/java/lang/Runtime.html)).
+	
+	<b>CPU:</b> ![](img/CPU2.png)
+	<b>Tiempo:</b> ![](img/2Hilos.png)
+3. Tantos hilos como el doble de núcleos de procesamiento.
+	
+	<b>CPU:</b> ![](img/CPU3.png)
+	<b>Tiempo:</b> ![](img/3Hilos.png)
+4. 50 hilos.
+	
+	<b>CPU:</b> ![](img/CPU4.png)
+	<b>Tiempo:</b> ![](img/4Hilos.png)
+5. 100 hilos.
+	
+	<b>CPU:</b> ![](img/CPU5.png)
+	<b>Tiempo:</b> ![](img/5Hilos.png)
+
+
 
 Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos. Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):
 
