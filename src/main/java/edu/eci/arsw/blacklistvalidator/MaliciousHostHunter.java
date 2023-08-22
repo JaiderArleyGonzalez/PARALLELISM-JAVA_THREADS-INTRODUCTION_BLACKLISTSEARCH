@@ -37,7 +37,7 @@ public class MaliciousHostHunter extends Thread{
         int localOccurrencesCount = 0;
         int localCheckedListsCount = 0;
         
-        for (int i=startIndex;i < endIndex && localOccurrencesCount <= BLACK_LIST_ALARM_COUNT;i++){
+        for (int i=startIndex;i < endIndex;i++){
             localCheckedListsCount++;
             
             if (skds.isInBlackListServer(i, ipAddress)){
@@ -47,10 +47,7 @@ public class MaliciousHostHunter extends Thread{
                 localOccurrencesCount++;
                 
             }
-            if(blackListOcurrences.size()>=BLACK_LIST_ALARM_COUNT){
-                
-                break;
-            }
+            
             
             
         }

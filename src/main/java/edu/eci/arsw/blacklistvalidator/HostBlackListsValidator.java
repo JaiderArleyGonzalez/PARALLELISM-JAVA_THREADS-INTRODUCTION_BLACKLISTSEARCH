@@ -48,6 +48,7 @@ public class HostBlackListsValidator {
         for(int i = 0; i < N; i++){
             int startIndex = i * chunkSize;
             int endIndex = (i == N - 1) ? skds.getRegisteredServersCount() : (i + 1) * chunkSize;
+            
             MaliciousHostHunter thread = new MaliciousHostHunter(skds, ipaddress, startIndex, endIndex, N);
             threads.add(thread);
         }
